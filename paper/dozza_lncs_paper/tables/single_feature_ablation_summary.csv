@@ -1,0 +1,16 @@
+horizon_hours,track,target,model,ablated_feature,feature_group,delta_mae,delta_wape_pct
+1,flow,ingressi_borgo,extra_trees,hour,calendar,0.854,1.7272
+1,nationality,tim_Ni_mean15,ridge,tim_Tc_mean15_lag1h,tim,38.558,0.813
+1,age,tim_F6_mean15,hist_gradient_boosting,tim_F6_mean15_lag1h,target_history,12.9623,0.8458
+3,flow,uscite_borgo,random_forest,entra_piazzarocca_ingresso_lag1h,pedoni,0.6522,1.2208
+3,nationality,tim_Ni_mean15,extra_trees,tim_Ns_mean15_lag1h,target_history,19.2898,0.4065
+3,age,tim_F6_mean15,poisson,tim_F6_sum15_roll24h_mean,target_history,20.4818,1.336
+6,flow,uscite_borgo,extra_trees,tim_Vp_max15_roll6h_mean,tim,1.8773,3.4996
+6,nationality,tim_Ni_mean15,ridge,tim_F6_mean15_lag24h,tim,21.5311,0.4536
+6,age,tim_F6_mean15,poisson,tim_F6_sum15_roll24h_mean,target_history,49.1429,3.2045
+12,flow,uscite_borgo,extra_trees,tim_Vi_mean15_lag24h,tim,0.953,1.78
+12,nationality,tim_Ni_mean15,poisson,tim_Gf_mean15_roll24h_mean,tim,238.0251,5.0103
+12,age,tim_F6_mean15,hist_gradient_boosting,tim_F6_sum15_roll24h_mean,target_history,104.5468,6.814
+24,flow,uscite_borgo,xgboost,tim_Vp_mean15_lag24h,tim,4.9537,9.1347
+24,nationality,tim_Ni_mean15,xgboost,tim_Gf_mean15_lag24h,tim,16.6594,0.3516
+24,age,tim_F6_mean15,xgboost,tim_F6_mean15_lag24h,target_history,13.2756,0.8658

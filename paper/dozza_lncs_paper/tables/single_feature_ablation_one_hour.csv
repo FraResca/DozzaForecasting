@@ -1,0 +1,11 @@
+horizon_hours,track,target,model,ablated_feature,feature_group,delta_mae,delta_wape_pct
+1,flow,ingressi_borgo,extra_trees,hour,calendar,0.854,1.7272
+1,flow,uscite_borgo,extra_trees,entra_arcoribellino_roll3h_mean,pedoni,0.7342,1.3798
+1,nationality,tim_Ni_mean15,ridge,tim_Tc_mean15_lag1h,tim,38.558,0.813
+1,nationality,tim_Ns_mean15,extra_trees,tim_Ns_mean15_lag1h,target_history,8.9418,7.5255
+1,age,tim_F1_mean15,two_stage_ridge,tim_Ni_mean15_lag1h,tim,0.7351,1.0654
+1,age,tim_F2_mean15,ridge,tim_F2_sum15_lag1h,target_history,1.353,0.3704
+1,age,tim_F3_mean15,ridge,tim_Ni_mean15_lag1h,tim,2.016,0.4518
+1,age,tim_F4_mean15,two_stage_ridge,tim_Ni_mean15_lag1h,tim,3.9788,0.6005
+1,age,tim_F5_mean15,extra_trees,tim_Ni_mean15_lag1h,tim,3.4504,0.3936
+1,age,tim_F6_mean15,hist_gradient_boosting,tim_F6_mean15_lag1h,target_history,12.9623,0.8458

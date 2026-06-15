@@ -1,0 +1,11 @@
+horizon_hours,track,target,best_overall_model,best_overall_mae,last_hour_mae,last_hour_r2,best_feature_model,best_feature_mae,best_feature_r2,mae_improvement_vs_last_hour_pct
+1,flow,ingressi_borgo,extra_trees,18.6937,21.2902,0.6362,extra_trees,18.6937,0.5542,12.1958
+1,flow,uscite_borgo,extra_trees,15.393,20.5434,0.7193,extra_trees,15.393,0.8256,25.0708
+1,nationality,tim_Ni_mean15,last_hour,97.7994,97.7994,0.8583,ridge,157.8777,0.6035,0.0
+1,nationality,tim_Ns_mean15,last_hour,7.9976,7.9976,0.815,extra_trees,11.9967,0.6265,0.0
+1,age,tim_F1_mean15,last_hour,4.9105,4.9105,0.7105,two_stage_ridge,10.1284,0.1913,0.0
+1,age,tim_F2_mean15,last_hour,15.2623,15.2623,0.7869,ridge,21.1444,0.457,0.0
+1,age,tim_F3_mean15,last_hour,16.5994,16.5994,0.8005,ridge,25.0209,0.4882,0.0
+1,age,tim_F4_mean15,last_hour,21.8845,21.8845,0.7918,two_stage_ridge,34.4468,0.446,0.0
+1,age,tim_F5_mean15,last_hour,27.4725,27.4725,0.8475,extra_trees,46.1489,0.5901,0.0
+1,age,tim_F6_mean15,last_hour,26.2317,26.2317,0.7322,hist_gradient_boosting,37.1972,0.5064,0.0

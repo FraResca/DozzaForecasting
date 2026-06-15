@@ -1,0 +1,25 @@
+\section{Introduction}
+\label{sec:introduction}
+
+Despite the growing adoption of Artificial Intelligence and urban analytics in Smart City ecosystems, most mobility and crowd-flow forecasting studies focus on large metropolitan areas characterized by dense sensing infrastructures, extensive transportation networks, and abundant historical observations. Comparatively little attention has been devoted to small historic towns and tourism-oriented destinations, where data availability is often fragmented across heterogeneous sources and where visitor management plays a critical role in urban sustainability.
+This gap is particularly relevant for smart tourism destinations, where local authorities increasingly seek AI-enabled decision-support tools capable of anticipating visitor peaks, improving public-space management, optimizing local services, supporting sustainable mobility policies and preserving cultural heritage. In these contexts, forecasting is not an end in itself but a key component of data-driven urban governance. Existing studies rarely investigate whether the integration of heterogeneous urban data sources—including pedestrian sensors, telecommunications data, weather observations and event information—can be effectively integrated into a unified analytics framework supporting operational decision making in small historic destinations.
+
+To address this gap, this paper proposes and evaluates an AI-driven multi-source forecasting framework for smart tourism analytics in the historic borough of Dozza, Italy, with 6,569 inhabitants in 2024. Rather than focusing exclusively on predictive performance, the framework aims to demonstrate how heterogeneous urban data streams can be transformed into actionable intelligence for local administrations and destination managers. The main contributions are:
+\begin{enumerate}
+    \item The design of a reproducible AI-enabled urban analytics framework integrating pedestrian sensing, mobile-network indicators, weather observations, and event-related information into a unified decision-support environment.
+    \item A comprehensive multi-horizon evaluation, at 1, 3, 6, 12, and 24 hours ahead, of machine learning models against forecasting baselines.
+    \item An empirical assessment of how heterogeneous urban data sources contribute to forecasting different mobility-related target families, including pedestrian flows (entrances and exits), nationality indicators (Italian and foreign presences) and demographic aggregates (age-based visitor distributions).
+    \item An interpretable AI analysis combining feature selection, ablation studies, permutation importance, and SHAP explanations to improve transparency, explainability, and trustworthiness in Smart City decision-support applications.
+\end{enumerate}
+ 
+The  objective is not only to improve forecasting accuracy but also to assess how Artificial Intelligence can support sustainable tourism governance in small historic destinations. More specifically, the study evaluates whether integrating heterogeneous urban data sources generates measurable benefits beyond those obtainable through simple temporal persistence.
+This distinction is important because high predictive accuracy in mobility data may simply reflect temporal inertia rather than the effective exploitation of contextual information. Understanding when external data sources contribute meaningful predictive value is therefore essential for designing robust and operationally useful Smart City analytics systems.
+
+
+
+The remainder of the paper is organized as follows. Section~\ref{sec:related}
+summarizes related work on Smart City analytics, tourism forecasting, and mobility prediction.
+Section~\ref{sec:methodologies} describes the dataset, preprocessing pipeline, targets,
+models, feature selection strategy and evaluation metrics. Section~\ref{sec:results} reports the
+experimental results and interpretability analyses. Section~\ref{sec:conclusions}
+concludes with implications and limitations.

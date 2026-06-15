@@ -1,0 +1,26 @@
+\section{Conclusions}
+\label{sec:conclusions}
+
+The study demonstrates that AI-enabled multi-source urban analytics can provide actionable support for visitor-flow management in small smart tourism destinations. Beyond forecasting accuracy, the proposed framework contributes to the broader Smart City vision by integrating heterogeneous urban data sources into a unified decision-support environment capable of supporting sustainable tourism governance and heritage preservation.
+
+
+
+****
+CONTROLLARE
+
+5 Conclusions
+
+This paper presented an AI-driven multi-source urban analytics framework for people forecasting in the historic borough of Dozza, integrating pedestrian camera counts, mobile-network indicators, weather observations, and event-related information within a unified Smart City analytics environment.
+
+The results highlight that the effectiveness of AI-enabled forecasting strongly depends on the target being modeled. For pedestrian-flow forecasting, the integration of heterogeneous urban data sources produces measurable benefits over simple persistence baselines. In particular, the Extra Trees model reduced the one-hour forecasting error by 12.2% for entrances and 25.1% for exits, demonstrating that contextual information can improve short-term visitor-flow prediction in small tourism destinations. However, these benefits progressively decrease as the forecasting horizon increases, with persistence becoming increasingly competitive at longer horizons.
+
+A different pattern emerges for telecommunications-derived indicators. For nationality and age-band targets, immediate persistence consistently outperformed feature-rich machine-learning models across all evaluated horizons. This finding suggests that these variables are largely governed by strong temporal continuity and that additional contextual information contributes only marginally to predictive performance in the current setting.
+
+Beyond predictive accuracy, the study provides several methodological insights. First, multi-source data integration is valuable but target-dependent. Second, complex machine-learning models should always be evaluated against strong persistence baselines, as apparent predictive performance may simply reflect temporal inertia. Third, explainability and ablation analyses are essential to understand which information sources genuinely contribute to prediction and which merely introduce additional complexity.
+
+From a Smart City perspective, the proposed framework demonstrates how heterogeneous urban data streams can be transformed into actionable intelligence supporting visitor-flow management, public-space monitoring, sustainable tourism governance, and evidence-based decision making in small historic destinations. The framework is fully reproducible and can be adapted to other tourism-oriented municipalities characterized by limited sensing infrastructures and fragmented data ecosystems.
+
+The study is subject to several limitations. The analysis is restricted to the period in which all data sources overlap and to a single case-study destination. Furthermore, event-related variables show mixed predictive effects and do not yet provide a stable improvement across targets and forecasting horizons.
+
+Future research will investigate several extensions. First, longer observation periods and additional tourism seasons will be analyzed to assess the temporal robustness of the findings. Second, the framework will be replicated in other historic towns and Smart Tourism destinations to evaluate its transferability and generalizability. Third, richer event representations based on social-media signals, semantic event descriptions, and event popularity indicators will be explored. Fourth, advanced deep-learning approaches, including transformer-based architectures and graph neural networks, will be compared with the current tabular-learning framework. Finally, future work will focus on integrating forecasting outputs into real-time Smart City decision-support systems capable of supporting proactive visitor management, resource allocation, and sustainable urban planning.
+****

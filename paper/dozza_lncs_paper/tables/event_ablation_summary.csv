@@ -1,0 +1,10 @@
+horizon_hours,track,targets,event_rows,mean_delta_mae,median_delta_mae,rank_mean_delta,n_groups
+1,nationality,2,2,3.3932,3.3932,3,4
+3,nationality,2,2,2.5326,2.5326,3,4
+3,age,6,6,-0.0407,0.2633,4,4
+6,flow,2,2,0.6441,0.6441,3,4
+6,nationality,2,2,0.5992,0.5992,3,4
+6,age,6,6,-0.9242,0.5428,4,4
+12,nationality,2,2,-20.1302,-20.1302,4,4
+12,age,6,6,-4.6094,-3.7355,4,4
+24,nationality,2,2,-0.1982,-0.1982,3,3

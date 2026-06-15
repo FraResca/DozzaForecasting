@@ -1,0 +1,13 @@
+horizon_hours,track,feature_group,selected_features
+1,flow,pedoni,14
+1,flow,meteo,6
+1,flow,calendar,2
+1,flow,tim,2
+1,flow,target_history,1
+1,nationality,tim,7
+1,nationality,target_history,3
+1,nationality,events,3
+1,nationality,meteo,2
+1,age,target_history,8
+1,age,tim,6
+1,age,meteo,1

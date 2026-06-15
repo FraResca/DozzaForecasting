@@ -1,0 +1,293 @@
+\section{Results}
+\label{sec:results}
+
+All results in this section refer to the final chronological test split. Model
+rankings are stated with the metric used for the ranking. Positive MAE gain
+means that the feature-based model has lower MAE than the last-hour baseline;
+positive ablation $\Delta$MAE means that removing the feature or feature family
+increases MAE.
+
+The pedestrian-flow task is the only target family for which feature-based
+models lower one-hour MAE and WAPE relative to immediate persistence for both
+targets. Table~\ref{tab:flow-results} reports the tree and boosting alternatives
+with the lowest one-hour MAE, together with last-hour persistence.
+
+\begin{table}
+\caption{One-hour pedestrian-flow model leaderboard ranked by MAE on the final chronological test split.}
+\label{tab:flow-results}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{llrrrrr}
+\toprule
+Target & Model & MAE & $R^2$ & WAPE & Fit s & ms/row \\
+\midrule
+ingressi\_borgo & Extra Trees & 18.69 & 0.554 & 37.81 & 0.50 & 0.119 \\
+ingressi\_borgo & Random Forest & 19.23 & 0.545 & 38.90 & 0.68 & 0.080 \\
+ingressi\_borgo & XGBoost & 19.89 & 0.539 & 40.24 & 0.31 & 0.005 \\
+ingressi\_borgo & LightGBM & 20.98 & 0.524 & 42.42 & 0.17 & 0.006 \\
+ingressi\_borgo & HGB & 21.16 & 0.508 & 42.80 & 0.43 & 0.014 \\
+ingressi\_borgo & Last-hour & 21.29 & 0.636 & 43.06 & 0.00 & 0.010 \\
+uscite\_borgo & Extra Trees & 15.39 & 0.826 & 28.93 & 0.50 & 0.099 \\
+uscite\_borgo & Random Forest & 15.54 & 0.828 & 29.20 & 0.61 & 0.100 \\
+uscite\_borgo & XGBoost & 15.66 & 0.821 & 29.42 & 0.31 & 0.005 \\
+uscite\_borgo & HGB & 16.07 & 0.823 & 30.19 & 0.33 & 0.014 \\
+uscite\_borgo & LightGBM & 16.22 & 0.807 & 30.49 & 0.17 & 0.006 \\
+uscite\_borgo & Last-hour & 20.54 & 0.719 & 38.61 & 0.00 & 0.006 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For entrances, Extra Trees reduces MAE by 12.2\% and WAPE by 5.3 percentage
+points relative to last-hour persistence. For exits, it reduces MAE by 25.1\%
+and WAPE by 9.7 percentage points. The $R^2$ ordering is different: last-hour
+persistence has the highest $R^2$ for entrances, and Random Forest has the
+highest $R^2$ for exits. The supported claim is therefore lower absolute error
+for the Extra Trees flow forecasts, not universal dominance on every metric.
+The close MAE values for Extra Trees, Random Forest, and XGBoost show that the
+one-hour flow result is not tied to a single tree implementation.
+
+The selected one-hour feature sets also differ by target family
+(Table~\ref{tab:feature-groups}). Flow uses mostly recent camera-history
+features, plus weather, calendar, TIM, and one target-history feature.
+Nationality uses TIM, event, weather, and target-history features. Age uses TIM,
+target-history, and one weather feature. Event variables are not selected for
+one-hour flow or one-hour age models.
+
+\begin{table}
+\caption{One-hour selected-feature group composition, reported as counts of selected predictors by feature family.}
+\label{tab:feature-groups}
+\centering
+\scriptsize
+\begin{tabular}{lrrrrrrr}
+\toprule
+Track & Calendar & Events & Weather & Pedestrian & Target hist. & TIM & Total \\
+\midrule
+Flow & 2 & 0 & 6 & 14 & 1 & 2 & 25 \\
+Nationality & 0 & 3 & 2 & 0 & 3 & 7 & 15 \\
+Age & 0 & 0 & 1 & 0 & 8 & 6 & 15 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The multi-horizon comparison in Table~\ref{tab:flow-horizon} limits the flow
+claim to short horizons. Feature-based models improve over last-hour
+persistence for both flow targets at one hour. At three hours only entrances
+show a positive MAE gain. At six hours entrances improve by 8.4\%, while exits
+are effectively tied with persistence (+0.2\% MAE gain). At 12 and 24 hours,
+last-hour persistence has lower MAE than the best feature-based model.
+
+\begin{table}
+\caption{Pedestrian-flow comparison between last-hour persistence and the lowest-MAE feature-based model across horizons. Positive gain means lower MAE than persistence.}
+\label{tab:flow-horizon}
+\centering
+\scriptsize
+\begin{tabularx}{\textwidth}{rlXrrrr}
+\toprule
+Horizon & Target & Feature model & Last-hour MAE & Feature MAE & Feature $R^2$ & MAE gain \\
+\midrule
+1 h & ingressi\_borgo & Extra Trees & 21.29 & 18.69 & 0.554 & +12.20\% \\
+1 h & uscite\_borgo & Extra Trees & 20.54 & 15.39 & 0.826 & +25.07\% \\
+3 h & ingressi\_borgo & Random Forest & 21.39 & 21.13 & 0.438 & +1.22\% \\
+3 h & uscite\_borgo & Random Forest & 20.63 & 20.96 & 0.611 & -1.62\% \\
+6 h & ingressi\_borgo & Extra Trees & 21.56 & 19.76 & 0.558 & +8.37\% \\
+6 h & uscite\_borgo & Extra Trees & 20.78 & 20.73 & 0.611 & +0.21\% \\
+12 h & ingressi\_borgo & Extra Trees & 21.44 & 24.15 & 0.441 & -12.64\% \\
+12 h & uscite\_borgo & Extra Trees & 20.75 & 26.87 & 0.443 & -29.51\% \\
+24 h & ingressi\_borgo & XGBoost & 21.73 & 22.59 & 0.471 & -3.98\% \\
+24 h & uscite\_borgo & XGBoost & 20.84 & 23.81 & 0.526 & -14.23\% \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Figure~\ref{fig:flow-horizon-gain} visualizes the same comparison as a signed
+MAE reduction relative to last-hour persistence. The figure is retained because
+it makes the non-monotonic horizon behavior visible: the feature-based advantage
+is largest at one hour, partly reappears for entrances at six hours, and is
+negative at longer horizons.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.78\textwidth]{feature_gain_vs_last_hour_by_horizon_flow.pdf}
+\caption{Pedestrian-flow MAE reduction of the lowest-MAE feature model relative to last-hour persistence. Positive values mean lower MAE than persistence.}
+\label{fig:flow-horizon-gain}
+\end{figure}
+
+Rolling validation gives a stricter temporal robustness check than the final
+split alone. Table~\ref{tab:rolling-validation} reports the lowest-MAE model
+averaged over three rolling folds at the one-hour horizon. For exits, Extra
+Trees is also the rolling-validation winner. For entrances, rolling validation
+selects last-hour persistence even though Extra Trees has lower MAE on the
+final September test split. The entrance result is therefore a final-period
+error reduction, while the exit result is supported by both rolling validation
+and the final split.
+
+\begin{table}
+\caption{One-hour rolling-validation winners by target. Values are means over three chronological folds.}
+\label{tab:rolling-validation}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{lllrrrr}
+\toprule
+Track & Target & Rolling winner & Folds & MAE mean & MAE std & $R^2$ mean \\
+\midrule
+Flow & entrances & Last-hour & 3 & 17.35 & 2.81 & 0.631 \\
+Flow & exits & Extra Trees & 3 & 15.95 & 3.31 & 0.713 \\
+Nationality & Italian & Last-hour & 3 & 102.38 & 26.85 & 0.886 \\
+Nationality & foreign & Last-hour & 3 & 10.34 & 3.40 & 0.866 \\
+Age & $<18$ & Last-hour & 3 & 5.15 & 0.97 & 0.711 \\
+Age & 18--30 & Last-hour & 3 & 18.22 & 5.50 & 0.802 \\
+Age & 31--40 & Last-hour & 3 & 18.49 & 4.41 & 0.833 \\
+Age & 41--50 & Last-hour & 3 & 24.74 & 6.75 & 0.819 \\
+Age & 51--60 & Last-hour & 3 & 29.07 & 5.60 & 0.841 \\
+Age & 61+ & Last-hour & 3 & 28.64 & 4.57 & 0.809 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+TIM nationality and age targets have a different behavior. Table~\ref{tab:persistence}
+shows that, at one hour, last-hour persistence has lower MAE than the
+lowest-MAE feature-based model for all eight TIM targets. The same pattern holds across
+all 40 TIM target-horizon cases in the complete multi-horizon target summary.
+Feature-rich models often achieve
+positive $R^2$, but their absolute error is higher than immediate persistence.
+For these TIM indicators, the predictable component in this experiment is
+therefore dominated by autoregressive continuity.
+
+\begin{table}
+\caption{Persistence versus the lowest-MAE feature-based model at the one-hour horizon for TIM targets.}
+\label{tab:persistence}
+\centering
+\scriptsize
+\begin{tabularx}{\textwidth}{llrrXrr}
+\toprule
+Track & Target & Last-hour MAE & Last-hour $R^2$ & Best feature model & Feature MAE & Feature $R^2$ \\
+\midrule
+Nationality & tim\_Ni\_mean15 & 97.80 & 0.858 & ridge & 157.88 & 0.604 \\
+Nationality & tim\_Ns\_mean15 & 8.00 & 0.815 & Extra Trees & 12.00 & 0.626 \\
+Age & tim\_F1\_mean15 & 4.91 & 0.711 & two-stage ridge & 10.13 & 0.191 \\
+Age & tim\_F2\_mean15 & 15.26 & 0.787 & ridge & 21.14 & 0.457 \\
+Age & tim\_F3\_mean15 & 16.60 & 0.800 & ridge & 25.02 & 0.488 \\
+Age & tim\_F4\_mean15 & 21.88 & 0.792 & two-stage ridge & 34.45 & 0.446 \\
+Age & tim\_F5\_mean15 & 27.47 & 0.848 & Extra Trees & 46.15 & 0.590 \\
+Age & tim\_F6\_mean15 & 26.23 & 0.732 & HGB & 37.20 & 0.506 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Group-level ablation gives a coarse interpretation of the best feature-based
+models. Table~\ref{tab:ablation} reports the feature family whose removal gives
+the largest average one-hour MAE increase within each track. For flow, the
+dominant family is pedestrian history. For nationality and age, the dominant
+families are TIM-derived variables and target history. Weather and event
+features can be selected, but their one-hour group-level effect is smaller than
+the dominant history or TIM groups.
+
+\begin{table}
+\caption{Largest average MAE degradation under one-hour leave-one-group-out ablation. Positive values mean worse performance after removing the feature family.}
+\label{tab:ablation}
+\centering
+\begin{tabular}{lcr}
+\toprule
+Track & Highest-impact removed group & Mean $\Delta$MAE \\
+\midrule
+Flow & pedestrian history & +6.01 \\
+Nationality & TIM & +67.41 \\
+Age & TIM & +9.20 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The leave-one-feature-out ablation in Table~\ref{tab:single-feature-ablation}
+is narrower than group ablation: it removes one selected feature at a time and
+re-trains the lowest-MAE feature-based model for the affected target, without
+retuning. It identifies local dependencies inside the selected feature set. For
+one-hour flow, the largest single-feature effects are small in count units
+relative to the group-level pedestrian-history effect. For TIM targets, the
+largest single-feature effects are usually TIM or target-history lags, which is
+consistent with the persistence-dominated performance comparison.
+
+\begin{table}
+\caption{Largest leave-one-feature-out MAE degradation by track and horizon, after re-training the selected feature-based model without one predictor.}
+\label{tab:single-feature-ablation}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabularx}{\textwidth}{rl l l X l r}
+\toprule
+Horizon & Track & Target & Model & Removed feature & Group & $\Delta$MAE \\
+\midrule
+1 h & Flow & \path|ingressi_borgo| & Extra Trees & \path|hour| & calendar & +0.85 \\
+1 h & Nationality & \path|tim_Ni_mean15| & Ridge & \path|tim_Tc_mean15_lag1h| & TIM & +38.56 \\
+1 h & Age & \path|tim_F6_mean15| & HGB & \path|tim_F6_mean15_lag1h| & target hist. & +12.96 \\
+3 h & Flow & \path|uscite_borgo| & Random Forest & \path|entra_piazzarocca_ingresso_lag1h| & pedestrian & +0.65 \\
+3 h & Nationality & \path|tim_Ni_mean15| & Extra Trees & \path|tim_Ns_mean15_lag1h| & target hist. & +19.29 \\
+3 h & Age & \path|tim_F6_mean15| & Poisson & \path|tim_F6_sum15_roll24h_mean| & target hist. & +20.48 \\
+6 h & Flow & \path|uscite_borgo| & Extra Trees & \path|tim_Vp_max15_roll6h_mean| & TIM & +1.88 \\
+6 h & Nationality & \path|tim_Ni_mean15| & Ridge & \path|tim_F6_mean15_lag24h| & TIM & +21.53 \\
+6 h & Age & \path|tim_F6_mean15| & Poisson & \path|tim_F6_sum15_roll24h_mean| & target hist. & +49.14 \\
+12 h & Flow & \path|uscite_borgo| & Extra Trees & \path|tim_Vi_mean15_lag24h| & TIM & +0.95 \\
+12 h & Nationality & \path|tim_Ni_mean15| & Poisson & \path|tim_Gf_mean15_roll24h_mean| & TIM & +238.03 \\
+12 h & Age & \path|tim_F6_mean15| & HGB & \path|tim_F6_sum15_roll24h_mean| & target hist. & +104.55 \\
+24 h & Flow & \path|uscite_borgo| & XGBoost & \path|tim_Vp_mean15_lag24h| & TIM & +4.95 \\
+24 h & Nationality & \path|tim_Ni_mean15| & XGBoost & \path|tim_Gf_mean15_lag24h| & TIM & +16.66 \\
+24 h & Age & \path|tim_F6_mean15| & XGBoost & \path|tim_F6_mean15_lag24h| & target hist. & +13.28 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The event-feature analysis is mixed. The event-aware dataset contains 42 event
+features, and at least one event signal is non-zero in 2,132 of 2,735 modeling
+hours. Table~\ref{tab:events} shows that event variables enter the selected
+feature set mainly for nationality and age at 3--12 hours; they enter the flow
+feature set only at six hours. The leave-one-group-out event effect is positive
+for nationality at one, three, and six hours and for flow at six hours, but it
+is negative for nationality at 12 and 24 hours and for age at 3, 6, and 12
+hours. This is evidence of predictive association in some fitted models, not a
+stable performance gain.
+
+\begin{table}
+\caption{Event-feature selection and leave-one-group-out event ablation by horizon and track. Positive $\Delta$MAE means removing event features worsens the selected feature-based model.}
+\label{tab:events}
+\centering
+\scriptsize
+\begin{tabular}{rlrrr}
+\toprule
+Horizon & Track & Event features & Event share & Mean event $\Delta$MAE \\
+\midrule
+1 h & flow & 0/25 & 0.0\% & -- \\
+1 h & nationality & 3/15 & 20.0\% & +3.39 \\
+1 h & age & 0/15 & 0.0\% & -- \\
+3 h & flow & 0/15 & 0.0\% & -- \\
+3 h & nationality & 3/15 & 20.0\% & +2.53 \\
+3 h & age & 4/15 & 26.7\% & -0.04 \\
+6 h & flow & 3/15 & 20.0\% & +0.64 \\
+6 h & nationality & 5/15 & 33.3\% & +0.60 \\
+6 h & age & 7/15 & 46.7\% & -0.92 \\
+12 h & flow & 0/15 & 0.0\% & -- \\
+12 h & nationality & 6/15 & 40.0\% & -20.13 \\
+12 h & age & 8/15 & 53.3\% & -4.61 \\
+24 h & flow & 0/15 & 0.0\% & -- \\
+24 h & nationality & 2/15 & 13.3\% & -0.20 \\
+24 h & age & 0/15 & 0.0\% & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+SHAP summaries support the same cautious interpretation. Some event variables
+rank highly for individual targets: sport/motor event intensity is the top SHAP
+feature for \path|tim_Ni_mean15| at three hours, for \path|tim_F5_mean15| and
+\path|tim_F6_mean15| at six hours, and for \path|tim_F2_mean15| and
+\path|tim_F5_mean15| at 12 hours. Those target-level rankings do not overturn
+the ablation result: the event signal is visible in parts of the demographic
+models, but the current event encoding does not produce a consistent reduction
+in test error across tracks and horizons.
+
+The main operational result is therefore narrow and explicit. For short-horizon
+pedestrian-flow forecasting, recent camera dynamics plus selected contextual
+covariates provide lower MAE and WAPE than immediate persistence at one hour.
+For TIM nationality and age indicators, immediate persistence remains the
+lowest-MAE forecasting baseline in this dataset. Event variables should be kept
+as exploratory covariates and diagnostics, not presented as a validated driver
+of forecast accuracy.

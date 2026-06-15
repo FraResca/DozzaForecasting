@@ -1,0 +1,11 @@
+horizon_hours,track,target,model,model_family,mae,rmse,r2,smape_pct,wape_pct,mase,peak_f1,fit_seconds,inference_ms_per_row
+1,flow,ingressi_borgo,extra_trees,feature_model,18.6937,46.8595,0.5542,55.2417,37.8095,0.7285,0.7143,0.5048,0.1191
+1,flow,uscite_borgo,extra_trees,feature_model,15.393,27.9499,0.8256,51.8225,28.9274,0.541,0.8098,0.495,0.0988
+1,nationality,tim_Ni_mean15,last_hour,time_series_baseline,97.7994,147.9601,0.8583,2.1278,2.0621,0.3943,,0.0,0.0093
+1,nationality,tim_Ns_mean15,last_hour,time_series_baseline,7.9976,11.2639,0.815,6.8219,6.7309,0.2328,0.6933,0.0,0.006
+1,age,tim_F1_mean15,last_hour,time_series_baseline,4.9105,7.6435,0.7105,7.6277,7.1171,0.4338,0.4,0.0,0.0093
+1,age,tim_F2_mean15,last_hour,time_series_baseline,15.2623,19.9077,0.7869,4.3039,4.1788,0.3904,,0.0,0.0061
+1,age,tim_F3_mean15,last_hour,time_series_baseline,16.5994,22.9126,0.8005,3.8493,3.7198,0.392,,0.0,0.0059
+1,age,tim_F4_mean15,last_hour,time_series_baseline,21.8845,31.2206,0.7918,3.4047,3.303,0.394,,0.0,0.0058
+1,age,tim_F5_mean15,last_hour,time_series_baseline,27.4725,38.7801,0.8475,3.2567,3.1342,0.4154,,0.0,0.0059
+1,age,tim_F6_mean15,last_hour,time_series_baseline,26.2317,37.9324,0.7322,1.7266,1.7116,0.4121,,0.0,0.0058

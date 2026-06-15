@@ -1,0 +1,2 @@
+source_name,url,format,city,category,scale,confidence,name_field,start_field,end_field,city_field,category_field,scale_field,lat_field,lon_field,source_url_field,min_scale,record_path,pagination,page_size,max_pages,page_param,offset_param,limit_param
+example_json_city_feed,https://example.org/events?city=Dozza&limit=100,json,Dozza,,,0.6,title|name,startDate|start_datetime,endDate|end_datetime,city,category,scale,lat|geo.lat,lon|geo.lon,url|link,2,results,page,100,10,page,offset,limit

@@ -1,0 +1,11 @@
+aspect,value,diagnostic
+Aligned temporal window,2025-03-04 00:00 to 2025-09-30 23:00,"2,735 observed hours over 5,064 calendar hours (54.0% coverage)"
+Weekend representation,30.4% of aligned rows,Weekend hours are present but weekdays dominate the overlapping TIM period
+Entrance-count scale,"median 21, p90 92, max 587","Hourly pedestrian counts are right-tailed, with occasional large peaks"
+Exit-count scale,"median 27, p90 91, max 683",Exit counts have a similar skewed scale to entrance counts
+TIM total-presence scale,"mean 5,462.3, p90 6,721.1",TIM presences are a much smoother and larger aggregate than camera counts
+TIM nationality mix,foreign share 2.1% on average,Foreign presences are a small-scale target relative to Italian presences
+TIM age composition,"51-60 share 22.2%, 61+ share 39.6%",Older age bands form the largest part of the Tc demographic aggregate
+Weather conditions,mean temperature 18.5 C; rainy hours 9.5%,The overlap period is mostly spring-summer and contains relatively few rainy hours
+Event-signal density,75.5% of aligned rows have at least one event feature active,"Event variables are frequent but vary by distance, city, category, and intensity"
+Core-field missingness,0.0% average missingness,"The inner join produces complete core target, TIM, weather, and event fields"

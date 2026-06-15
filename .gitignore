@@ -1,0 +1,81 @@
+# Sistema operativo e editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Ambiente locale e segreti
+.env
+.env.*
+.venv/
+venv/
+env/
+.conda/
+.conda-env/
+
+# Cache Python e notebook
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Dati grezzi e file non pubblicabili
+Data/**
+data/**
+!Data/
+!Data/Eventi/
+Data/Eventi/**
+!Data/Eventi/source_config_example.csv
+!Data/Eventi/.gitkeep
+!data/.gitkeep
+*.xlsx
+*.xls
+*.xlsm
+*.docx
+*.csv.gz
+*.zip
+*.7z
+*.tar
+*.tar.gz
+*.tgz
+
+# Output, log e run locali/cluster
+outputs/
+logs/
+slurm-*.out
+slurm-*.err
+*.out
+*.err
+
+# Modelli e artefatti binari generati
+*.joblib
+*.pkl
+*.pickle
+*.model
+*.onnx
+
+# Artefatti LaTeX
+paper/**/*.aux
+paper/**/*.bbl
+paper/**/*.bcf
+paper/**/*.blg
+paper/**/*.fdb_latexmk
+paper/**/*.fls
+paper/**/*.log
+paper/**/*.out
+paper/**/*.run.xml
+paper/**/*.synctex.gz
+paper/**/*.toc
+paper/**/main.pdf
+paper/**/dozza_lncs_paper.pdf
+
+# File personali o temporanei di progetto
+todo.txt
+tmp/
+temp/

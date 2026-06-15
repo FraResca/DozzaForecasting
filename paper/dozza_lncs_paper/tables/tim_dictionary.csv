@@ -1,0 +1,8 @@
+fields,meaning
+event_time; cod_regione; cod_provincia; cod_comune; cod_ace; x; y,"15-minute timestamp and spatial identifiers for region, province, municipality, ACE area, and grid tile."
+"P, Ni, Ns","Total presences, Italian presences, and foreign presences; Ni + Ns = P in the raw data."
+"Tc, Tb",Italian consumer users with demographic detail and Italian business/non-consumer users; Tc + Tb approximates Ni.
+"Gm, Gf",Male and female aggregates within Tc; small differences may reflect rounding or unknown categories.
+F1-F6,"Age bands within Tc: <18, 18-30, 31-40, 41-50, 51-60, and 61+; F1+...+F6 = Tc."
+"Vp, Vr, Vi, Ve","Italian mobility categories: commuters, residents, intraregional visitors, and extraregional visitors; their sum approximates Ni."
+"mean15, sum15, max15","Hourly mean, sum, and maximum over 15-minute observations; sum15 is a person-quarter-hour aggregate."
