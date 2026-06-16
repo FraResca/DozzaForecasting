@@ -23,7 +23,7 @@ LEFT_REFERENCE_CSV="${LEFT_REFERENCE_CSV:-}"
 
 if [[ -z "${REFERENCE_CSV}" ]]; then
   for candidate in \
-    outputs/slurm_dozza_preprocess/dozza_joined_hourly_inner.csv \
+    outputs/dozza_preprocess/dozza_joined_hourly_inner.csv \
     outputs/dozza_analysis_local_meteo/dozza_joined_hourly_inner.csv \
     outputs/dozza_analysis/dozza_joined_hourly_inner.csv
   do
@@ -45,7 +45,7 @@ if [[ -z "${LEFT_REFERENCE_CSV}" ]]; then
     LEFT_REFERENCE_CSV="${candidate_from_reference}"
   else
     for candidate in \
-      outputs/slurm_dozza_preprocess/dozza_joined_hourly_left.csv \
+      outputs/dozza_preprocess/dozza_joined_hourly_left.csv \
       outputs/dozza_analysis_local_meteo/dozza_joined_hourly_left.csv \
       outputs/dozza_analysis/dozza_joined_hourly_left.csv
     do

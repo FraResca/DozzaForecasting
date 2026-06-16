@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""Congela gli eventi Dozza scaricati localmente in un CSV usabile su Slurm.
+"""Congela gli eventi Dozza scaricati localmente in un CSV riusabile.
 
-Il preprocessing sul cluster non deve dipendere dall'accesso a Internet. Lo
-script prende l'output locale di build_dozza_event_features.py e scrive in
-Data/Eventi solo gli eventi automatici scaricati, sincronizzati poi da
-send_this.sh. Gli eventi manuali e curati sono esclusi di default per evitare
-duplicati con manual_events.csv e major_events_2025.csv.
+Il preprocessing non deve dipendere dall'accesso a Internet. Lo script prende
+l'output locale di build_dozza_event_features.py e scrive in Data/Eventi solo
+gli eventi automatici scaricati. Gli eventi manuali e curati sono esclusi di
+default per evitare duplicati con manual_events.csv e major_events_2025.csv.
 """
 
 from __future__ import annotations
@@ -39,7 +38,7 @@ KEEP_COLUMNS = [
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Congela gli eventi scaricati localmente per l'uso su Slurm.")
+    parser = argparse.ArgumentParser(description="Congela gli eventi scaricati localmente per il riuso.")
     parser.add_argument("--input-csv", type=Path, default=DEFAULT_INPUT)
     parser.add_argument("--output-csv", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument(

@@ -518,7 +518,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--start", help="Inizio griglia oraria, es. 2025-01-01. Ignorato se reference-csv presente.")
     parser.add_argument("--end", help="Fine griglia oraria, es. 2025-12-31. Ignorato se reference-csv presente.")
     parser.add_argument("--analysis-tz", default="Europe/Rome")
-    parser.add_argument("--output-dir", type=Path, default=Path("outputs/slurm_dozza_preprocess"))
+    parser.add_argument("--output-dir", type=Path, default=Path("outputs/dozza_preprocess"))
     parser.add_argument("--request-timeout", type=int, default=30)
     parser.add_argument("--dozza-min-scale", type=int, default=2)
     parser.add_argument("--imola-min-scale", type=int, default=3)

@@ -222,8 +222,8 @@ def write_report(
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Summarize Dozza outputs across forecast horizons.")
-    parser.add_argument("--root-output-dir", type=Path, default=Path("outputs/slurm_dozza_three_analyses"))
-    parser.add_argument("--output-dir", type=Path, default=Path("outputs/slurm_dozza_three_analyses/horizon_summary"))
+    parser.add_argument("--root-output-dir", type=Path, default=Path("outputs/dozza_three_analyses"))
+    parser.add_argument("--output-dir", type=Path, default=Path("outputs/dozza_three_analyses/horizon_summary"))
     return parser.parse_args()
 
 

@@ -28,7 +28,6 @@ SAFE_OUTPUT_DIRS = {
     "dozza_auto_topk_smoketest",
     "dozza_modeling_smoketest_counts",
     "dozza_rename_figures_smoketest",
-    "dozza_slurm_smoketest",
     "dozza_three_analyses_smoketest",
 }
 
@@ -43,14 +42,9 @@ LEGACY_OUTPUT_DIRS = {
 }
 
 PROTECTED_OUTPUT_DIRS = {
-    "slurm_dozza_preprocess",
-    "slurm_dozza_three_analyses",
+    "dozza_preprocess",
+    "dozza_three_analyses",
     "dozza_analysis_local_meteo",
-}
-
-OBSOLETE_SLURM_FILES = {
-    "slurm_jobs/dozza_three_analyses/dozza_dual.slurm",
-    "slurm_jobs/dozza_three_analyses/dozza_six.slurm",
 }
 
 
@@ -93,7 +87,7 @@ def stale_output_candidates(args: argparse.Namespace) -> list[Candidate]:
         elif child.name in LEGACY_OUTPUT_DIRS and args.include_legacy_runs:
             add_candidate(candidates, child, "legacy modeling output")
 
-    current = outputs / "slurm_dozza_three_analyses"
+    current = outputs / "dozza_three_analyses"
     for obsolete_name in ["dual", "six"]:
         add_candidate(candidates, current / obsolete_name, "obsolete target-set output")
 
@@ -111,13 +105,10 @@ def stale_output_candidates(args: argparse.Namespace) -> list[Candidate]:
     return candidates
 
 
-def stale_slurm_candidates(args: argparse.Namespace) -> list[Candidate]:
+def stale_job_candidates(args: argparse.Namespace) -> list[Candidate]:
     candidates: list[Candidate] = []
-    for path in OBSOLETE_SLURM_FILES:
-        add_candidate(candidates, PROJECT_ROOT / path, "obsolete slurm job")
-
-    duplicate_slurm = PROJECT_ROOT / "scripts" / "slurm_jobs"
-    add_candidate(candidates, duplicate_slurm, "duplicate generated slurm tree under scripts/")
+    for path in [PROJECT_ROOT / "job_scripts", PROJECT_ROOT / "batch_jobs", PROJECT_ROOT / "scheduler_jobs"]:
+        add_candidate(candidates, path, "generated execution job directory")
     return candidates
 
 
@@ -136,7 +127,7 @@ def stale_log_candidates(args: argparse.Namespace) -> list[Candidate]:
     candidates: list[Candidate] = []
     if not args.include_logs:
         return candidates
-    log_dir = PROJECT_ROOT / "logs" / "slurm_dozza"
+    log_dir = PROJECT_ROOT / "logs" / "dozza"
     if not log_dir.exists():
         return candidates
 
@@ -155,14 +146,14 @@ def stale_log_candidates(args: argparse.Namespace) -> list[Candidate]:
 
     for path in sorted(log_dir.glob("*")):
         if path.is_file() and path not in keep_latest_per_prefix:
-            add_candidate(candidates, path, "old slurm log")
+            add_candidate(candidates, path, "old execution log")
     return candidates
 
 
 def collect_candidates(args: argparse.Namespace) -> list[Candidate]:
     candidates = [
         *stale_output_candidates(args),
-        *stale_slurm_candidates(args),
+        *stale_job_candidates(args),
         *stale_cache_candidates(args),
         *stale_log_candidates(args),
     ]
@@ -203,12 +194,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--include-failed-current",
         action="store_true",
-        help="Also remove incomplete current outputs under outputs/slurm_dozza_three_analyses.",
+        help="Also remove incomplete current outputs under outputs/dozza_three_analyses.",
     )
     parser.add_argument(
         "--include-logs",
         action="store_true",
-        help="Also clean logs/slurm_dozza. Keeps latest logs per job prefix by default.",
+        help="Also clean logs/dozza. Keeps latest logs per job prefix by default.",
     )
     parser.add_argument(
         "--keep-pycache",

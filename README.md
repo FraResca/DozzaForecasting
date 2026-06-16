@@ -2,21 +2,18 @@
 
 Reproducibility guide for the Dozza multi-source forecasting experiments.
 
-The repository contains the code used to reproduce the three experimental
-tracks reported in the paper:
+The repository contains the code used to reproduce three experimental tracks:
 
 - `flow`: pedestrian entrances and exits to the historic borough;
 - `nationality`: Italian and foreign TIM presence indicators;
 - `age`: TIM presence indicators by age band.
 
-Each track is evaluated at five forecast horizons: `1, 3, 6, 12, 24` hours. The
-default Slurm workflow runs shared preprocessing once, then launches the 15
-track-horizon modeling jobs, and finally builds the multi-horizon summary.
+Each track is evaluated at forecast horizons of `1, 3, 6, 12, 24` hours.
 
 ## 1. Restore The Input Data
 
 Raw data is not versioned in the public repository. Before running the
-experiments, restore the following local directory structure:
+experiments, restore this local directory structure:
 
 ```text
 Data/
@@ -34,14 +31,12 @@ Data/
 ```
 
 Only `Data/Eventi/source_config_example.csv` is kept in the public repository.
-The cluster workflow uses the frozen local event file
-`Data/Eventi/downloaded_events_local.csv`; it does not download events during
-the Slurm run.
+Use it as a template if the automatic event-source configuration must be
+rebuilt.
 
 ## 2. Prepare The Environment
 
-The pipeline was developed for Python 3.12 locally and for the `s4c` conda
-environment on the cluster. The main Python dependencies are:
+The pipeline was developed with Python 3.12. The main Python dependencies are:
 
 ```text
 pandas
@@ -55,120 +50,98 @@ lightgbm
 shap
 ```
 
-## 3. Optional: Regenerate The Local Event Dataset
+Install them in a local virtual environment or conda environment before running
+the scripts.
 
-Run this step only if `Data/Eventi/downloaded_events_local.csv` must be rebuilt
-from the configured event sources:
+## 3. Build The Shared Joined Dataset
+
+Create the hourly pedestrian, TIM, weather, and correlation outputs:
+
+```bash
+python scripts/analyze_dozza_datasets.py \
+  --data-dir Data \
+  --weather-dir Data/Meteo \
+  --output-dir outputs/dozza_preprocess \
+  --rebuild-tim
+```
+
+This step writes the joined hourly datasets and the preprocessing diagnostics to
+`outputs/dozza_preprocess/`.
+
+## 4. Add Event Features
+
+If `Data/Eventi/downloaded_events_local.csv` already exists, reuse it to avoid
+network-dependent runs. To rebuild event features and join them to the shared
+dataset:
+
+```bash
+python scripts/build_dozza_event_features.py \
+  --manual-events Data/Eventi/manual_events.csv \
+  --additional-events-csv Data/Eventi/major_events_2025.csv \
+  --additional-events-csv Data/Eventi/downloaded_events_local.csv \
+  --city-locations Data/Eventi/city_locations.csv \
+  --reference-csv outputs/dozza_preprocess/dozza_joined_hourly_inner.csv \
+  --joined-output-csv outputs/dozza_preprocess/dozza_joined_hourly_inner_with_events.csv \
+  --extra-joined-reference-csv outputs/dozza_preprocess/dozza_joined_hourly_left.csv \
+  --extra-joined-output-csv outputs/dozza_preprocess/dozza_joined_hourly_left_with_events.csv \
+  --output-dir outputs/dozza_events
+```
+
+To regenerate `downloaded_events_local.csv` from the configured public sources,
+run:
 
 ```bash
 bash scripts/run_dozza_events_local.sh
 ```
 
-After this step, sync the resulting `downloaded_events_local.csv` to the
-cluster together with the rest of the repository.
+## 5. Run The Forecasting Experiments
 
-## 4. Generate The Slurm Experiment Chain
-
-Generate the full workflow with the default paper configuration:
-
-```bash
-python scripts/generate_dozza_slurm_jobs.py
-```
-
-This creates:
-
-```text
-slurm_jobs/dozza_three_analyses/
-  dozza_preprocess.slurm
-  dozza_flow_h1h.slurm ... dozza_flow_h24h.slurm
-  dozza_nationality_h1h.slurm ... dozza_nationality_h24h.slurm
-  dozza_age_h1h.slurm ... dozza_age_h24h.slurm
-  dozza_summary.slurm
-  submit_all.sh
-```
-
-The generated workflow uses:
-
-- one shared preprocessing job;
-- causal forecast mode with horizon-specific embargo;
-- top-k feature validation for every track and horizon;
-- baselines, linear models, tree ensembles, boosting models, and two-stage
-  Ridge where configured;
-- permutation importance, ablation, single-feature ablation, and SHAP outputs.
-
-## 5. Sync The Repository To The Cluster
-
-Check what would be transferred:
+The full experiment consists of one shared preprocessing step followed by one
+modeling run for each target track and horizon. The commands below reproduce
+the full experimental configuration with validated top-k feature selection, baselines,
+linear models, tree ensembles, boosting models, permutation importance,
+ablation, single-feature ablation, SHAP, and timing metrics.
 
 ```bash
-bash send_this.sh dry-push
+INPUT_CSV="outputs/dozza_preprocess/dozza_joined_hourly_inner_with_events.csv"
+ROOT_OUT="outputs/dozza_three_analyses"
+MODELS="dummy_mean,dummy_median,last_hour,same_hour_previous_day,same_hour_previous_week,rolling_mean_24h,rolling_mean_168h,ridge,log1p_ridge,poisson,tweedie,random_forest,extra_trees,hist_gradient_boosting,xgboost,lightgbm,two_stage_ridge"
+
+for horizon in 1 3 6 12 24; do
+  for target_set in flow nationality age; do
+    python scripts/model_dozza_flows.py \
+      --input-csv "${INPUT_CSV}" \
+      --output-dir "${ROOT_OUT}/h${horizon}h/${target_set}" \
+      --target-set "${target_set}" \
+      --mode forecast \
+      --horizon-hours "${horizon}" \
+      --lags 1,2,24,168 \
+      --rolling-windows 3,6,24 \
+      --include-target-lags \
+      --include-target-rolling \
+      --top-k-grid 15,25,30,40,60 \
+      --models "${MODELS}" \
+      --rolling-validation \
+      --permutation-repeats 10 \
+      --bootstrap-samples 500 \
+      --shap-samples 300
+  done
+done
 ```
 
-Push code, job files, and input data:
+For large runs, submit the same Python commands through the execution system
+available on your infrastructure. The code does not require a specific
+scheduler.
+
+## 6. Build The Multi-Horizon Summary
 
 ```bash
-bash send_this.sh push
+python scripts/summarize_dozza_horizon_results.py \
+  --root-output-dir outputs/dozza_three_analyses \
+  --output-dir outputs/dozza_three_analyses/horizon_summary
 ```
 
-Verify that the remote copy contains the expected scripts, jobs, and frozen
-event data:
-
-```bash
-bash send_this.sh verify-remote
-```
-
-The default remote target is:
-
-```text
-fresca@copernico.unife.it:/hpc/home/fresca/RetryDozza
-```
-
-Override it with `REMOTE_USER`, `REMOTE_HOST`, `REMOTE_BASE`, or `REMOTE_DIR`
-if needed.
-
-## 6. Run The Full Experiment Chain
-
-Submit the complete Slurm chain from the local machine:
-
-```bash
-ssh fresca@copernico.unife.it 'cd /hpc/home/fresca/RetryDozza && bash submit_all.sh'
-```
-
-The dependency structure is:
-
-```text
-preprocess
-  -> flow h1,h3,h6,h12,h24
-  -> nationality h1,h3,h6,h12,h24
-  -> age h1,h3,h6,h12,h24
-  -> summary
-```
-
-The summary job runs after the modeling jobs and collects the available
-multi-horizon outputs.
-
-## 7. Download Results And Logs
-
-After the cluster run completes:
-
-```bash
-bash send_this.sh pull-results
-```
-
-Main result locations:
-
-```text
-outputs/slurm_dozza_preprocess/
-outputs/slurm_dozza_three_analyses/h1h/
-outputs/slurm_dozza_three_analyses/h3h/
-outputs/slurm_dozza_three_analyses/h6h/
-outputs/slurm_dozza_three_analyses/h12h/
-outputs/slurm_dozza_three_analyses/h24h/
-outputs/slurm_dozza_three_analyses/horizon_summary/
-logs/slurm_dozza/
-```
-
-For each `h<horizon>h/<track>/` directory, the expected modeling artifacts are:
+Expected artifacts for each `h<horizon>h/<track>/` directory include:
 
 ```text
 model_metrics.csv
@@ -181,50 +154,17 @@ single_feature_ablation.csv
 permutation_importance.csv
 shap_importance.csv
 test_predictions.csv
-modeling_report.md
 modeling_metadata.json
 ```
 
-## 8. Rebuild Paper Tables And Figures
+## 7. Lightweight Local Smoke Test
 
-After downloading a complete run, regenerate the paper tables and figures from
-the local outputs:
-
-```bash
-python paper/dozza_lncs_paper/build_tables.py
-```
-
-Then compile the paper:
-
-```bash
-cd paper/dozza_lncs_paper
-pdflatex main.tex
-bibtex main
-pdflatex main.tex
-pdflatex main.tex
-```
-
-The generated paper tables are written to:
-
-```text
-paper/dozza_lncs_paper/tables/
-```
-
-Paper-ready figures are written to:
-
-```text
-paper/dozza_lncs_paper/figures/
-```
-
-## 9. Lightweight Local Smoke Test
-
-This command is only for checking that the modeling script runs on a small
-subset. It is not the full experiment and should not be used for paper results.
-It requires the preprocessed joined dataset to already exist.
+This command only checks that the modeling script runs on a small configuration.
+It is not the full experiment and should not be used for final results.
 
 ```bash
 python scripts/model_dozza_flows.py \
-  --input-csv outputs/slurm_dozza_preprocess/dozza_joined_hourly_inner_with_events.csv \
+  --input-csv outputs/dozza_preprocess/dozza_joined_hourly_inner_with_events.csv \
   --output-dir /tmp/dozza_smoke \
   --target-set flow \
   --mode forecast \
@@ -238,20 +178,5 @@ python scripts/model_dozza_flows.py \
   --shap-samples 0 \
   --no-ablation \
   --no-single-feature-ablation \
-  --max-rows 500 \
   --quick
-```
-
-## 10. Cleaning Old Outputs
-
-Preview cleanup of old analysis outputs:
-
-```bash
-python scripts/clean_old_analyses.py
-```
-
-Run cleanup:
-
-```bash
-python scripts/clean_old_analyses.py --execute
 ```

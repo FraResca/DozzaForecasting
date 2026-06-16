@@ -1,4 +1,4 @@
-# Sistema operativo e editor
+# Operating system and editor files
 .DS_Store
 Thumbs.db
 *.swp
@@ -7,7 +7,7 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Ambiente locale e segreti
+# Local environments and secrets
 .env
 .env.*
 .venv/
@@ -16,7 +16,7 @@ env/
 .conda/
 .conda-env/
 
-# Cache Python e notebook
+# Python and notebook caches
 __pycache__/
 *.py[cod]
 *$py.class
@@ -25,7 +25,7 @@ __pycache__/
 .ruff_cache/
 .ipynb_checkpoints/
 
-# Dati grezzi e file non pubblicabili
+# Raw and non-public data
 Data/**
 data/**
 !Data/
@@ -45,37 +45,34 @@ Data/Eventi/**
 *.tar.gz
 *.tgz
 
-# Output, log e run locali/cluster
+# Generated outputs and execution logs
 outputs/
 logs/
-slurm-*.out
-slurm-*.err
+*_jobs/
+job_scripts/
+batch_jobs/
+scheduler_jobs/
+*.s?urm
+send_*.sh
+submit_*.sh
+scripts/generate_dozza_*_jobs.py
 *.out
 *.err
+*.log
+*.pid
+*.tmp
 
-# Modelli e artefatti binari generati
+# Generated model artifacts
 *.joblib
 *.pkl
 *.pickle
 *.model
 *.onnx
 
-# Artefatti LaTeX
-paper/**/*.aux
-paper/**/*.bbl
-paper/**/*.bcf
-paper/**/*.blg
-paper/**/*.fdb_latexmk
-paper/**/*.fls
-paper/**/*.log
-paper/**/*.out
-paper/**/*.run.xml
-paper/**/*.synctex.gz
-paper/**/*.toc
-paper/**/main.pdf
-paper/**/dozza_lncs_paper.pdf
+# Local manuscript and paper artifacts
+paper/
 
-# File personali o temporanei di progetto
+# Local notes and temporary files
 todo.txt
 tmp/
 temp/
