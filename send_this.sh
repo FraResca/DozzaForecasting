@@ -2,7 +2,7 @@
 set -euo pipefail
 
 REMOTE_USER="${REMOTE_USER:-fresca}"
-REMOTE_HOST="${REMOTE_HOST:-copernico.endif.man}"
+REMOTE_HOST="${REMOTE_HOST:-copernico.unife.it}"
 REMOTE_BASE="${REMOTE_BASE:-/hpc/home/${REMOTE_USER}}"
 REMOTE_DIR="${REMOTE_DIR:-${REMOTE_BASE}/RetryDozza}"
 LOCAL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

@@ -1,69 +1,42 @@
-{\scriptsize
-\setlength{\tabcolsep}{3pt}
-\begin{longtable}{rllp{0.25\textwidth}rrrr}
-\caption{Lowest-MAE final-split model for each target and forecast horizon.}\\
+\begin{table}[!t]
+\setlength{\abovecaptionskip}{1pt}
+\setlength{\belowcaptionskip}{2pt}
+\caption{Lowest-MAE final-split model for each target and forecast horizon. Abbrev.: F1--F6 age bands; LH last hour; RM168 weekly rolling mean; ET/RF/XGB/HGB/LGBM are tree and boosting models.}
+\label{tab:all-best-models}
+\centering
+\tiny
+\setlength{\tabcolsep}{1.7pt}
+\renewcommand{\arraystretch}{0.72}
+\begin{tabular}{@{}rlllrr@{\hspace{0.8em}}rlllrr@{}}
 \toprule
-H & Track & Target & Model & MAE & $R^2$ & WAPE & MASE \\
+H & Track & Target & Model & MAE & $R^2$ & H & Track & Target & Model & MAE & $R^2$ \\
 \midrule
-\endfirsthead
-\toprule
-H & Track & Target & Model & MAE & $R^2$ & WAPE & MASE \\
-\midrule
-\endhead
-\midrule
-\multicolumn{8}{r}{Continued on next page}\\
-\endfoot
+1h & Age & F1 & LH & 7.50 & 0.38 & 6h & Age & F6 & RM168 & 62.68 & -0.12 \\
+1h & Age & F2 & Ridge & 21.12 & 0.47 & 6h & Flow & Entr. & ET & 19.78 & 0.55 \\
+1h & Age & F3 & Ridge & 24.93 & 0.50 & 6h & Flow & Exit & ET & 20.91 & 0.61 \\
+1h & Age & F4 & 2S-Ridge & 34.49 & 0.43 & 6h & Nat. & Ita. & Ridge & 281.97 & 0.10 \\
+1h & Age & F5 & ET & 46.20 & 0.59 & 6h & Nat. & For. & ET & 19.84 & 0.08 \\
+1h & Age & F6 & HGB & 36.73 & 0.52 & 12h & Age & F1 & Med. & 10.88 & -0.01 \\
+1h & Flow & Entr. & ET & 18.82 & 0.55 & 12h & Age & F2 & RM168 & 34.10 & 0.03 \\
+1h & Flow & Exit & ET & 15.36 & 0.83 & 12h & Age & F3 & RM168 & 42.04 & -0.05 \\
+1h & Nat. & Ita. & Ridge & 157.76 & 0.61 & 12h & Age & F4 & RM168 & 55.40 & 0.02 \\
+1h & Nat. & For. & ET & 11.98 & 0.63 & 12h & Age & F5 & RM168 & 79.65 & 0.00 \\
+3h & Age & F1 & HGB & 10.02 & 0.14 & 12h & Age & F6 & RM168 & 62.82 & -0.13 \\
+3h & Age & F2 & ET & 28.27 & 0.23 & 12h & Flow & Entr. & ET & 21.99 & 0.48 \\
+3h & Age & F3 & ET & 35.36 & 0.28 & 12h & Flow & Exit & RF & 24.59 & 0.55 \\
+3h & Age & F4 & XGB & 47.06 & 0.27 & 12h & Nat. & Ita. & RM168 & 318.66 & -0.01 \\
+3h & Age & F5 & RF & 61.21 & 0.33 & 12h & Nat. & For. & XGB & 20.78 & -0.06 \\
+3h & Age & F6 & Pois. & 51.21 & 0.01 & 24h & Age & F1 & LH & 10.67 & -0.08 \\
+3h & Flow & Entr. & ET & 17.67 & 0.56 & 24h & Age & F2 & ET & 28.07 & 0.33 \\
+3h & Flow & Exit & ET & 18.37 & 0.68 & 24h & Age & F3 & LGBM & 34.21 & 0.29 \\
+3h & Nat. & Ita. & ET & 237.16 & 0.36 & 24h & Age & F4 & RF & 43.03 & 0.40 \\
+3h & Nat. & For. & ET & 15.30 & 0.43 & 24h & Age & F5 & RF & 58.12 & 0.43 \\
+6h & Age & F1 & HGB & 10.70 & 0.09 & 24h & Age & F6 & XGB & 50.98 & 0.15 \\
+6h & Age & F2 & Ridge & 31.35 & 0.07 & 24h & Flow & Entr. & XGB & 23.06 & 0.43 \\
+6h & Age & F3 & RF & 38.19 & 0.12 & 24h & Flow & Exit & RF & 24.95 & 0.46 \\
+6h & Age & F4 & log-Ridge & 52.02 & -0.01 & 24h & Nat. & Ita. & XGB & 201.79 & 0.55 \\
+6h & Age & F5 & RF & 74.98 & -0.06 & 24h & Nat. & For. & LH & 18.20 & 0.17 \\
 \bottomrule
-\endlastfoot
-1 h & age & \path|tim_F1_mean15| & \path|last_hour| & 4.91 & 0.711 & 7.12 & 0.43 \\
-1 h & age & \path|tim_F2_mean15| & \path|last_hour| & 15.26 & 0.787 & 4.18 & 0.39 \\
-1 h & age & \path|tim_F3_mean15| & \path|last_hour| & 16.60 & 0.800 & 3.72 & 0.39 \\
-1 h & age & \path|tim_F4_mean15| & \path|last_hour| & 21.88 & 0.792 & 3.30 & 0.39 \\
-1 h & age & \path|tim_F5_mean15| & \path|last_hour| & 27.47 & 0.848 & 3.13 & 0.42 \\
-1 h & age & \path|tim_F6_mean15| & \path|last_hour| & 26.23 & 0.732 & 1.71 & 0.41 \\
-1 h & flow & \path|ingressi_borgo| & \path|extra_trees| & 18.69 & 0.554 & 37.81 & 0.73 \\
-1 h & flow & \path|uscite_borgo| & \path|extra_trees| & 15.39 & 0.826 & 28.93 & 0.54 \\
-1 h & nationality & \path|tim_Ni_mean15| & \path|last_hour| & 97.80 & 0.858 & 2.06 & 0.39 \\
-1 h & nationality & \path|tim_Ns_mean15| & \path|last_hour| & 8.00 & 0.815 & 6.73 & 0.23 \\
-3 h & age & \path|tim_F1_mean15| & \path|last_hour| & 4.93 & 0.712 & 7.15 & 0.43 \\
-3 h & age & \path|tim_F2_mean15| & \path|last_hour| & 15.28 & 0.789 & 4.18 & 0.38 \\
-3 h & age & \path|tim_F3_mean15| & \path|last_hour| & 16.47 & 0.805 & 3.69 & 0.38 \\
-3 h & age & \path|tim_F4_mean15| & \path|last_hour| & 21.84 & 0.795 & 3.30 & 0.38 \\
-3 h & age & \path|tim_F5_mean15| & \path|last_hour| & 27.33 & 0.851 & 3.12 & 0.40 \\
-3 h & age & \path|tim_F6_mean15| & \path|last_hour| & 26.30 & 0.737 & 1.72 & 0.40 \\
-3 h & flow & \path|ingressi_borgo| & \path|random_forest| & 21.13 & 0.438 & 42.57 & 0.80 \\
-3 h & flow & \path|uscite_borgo| & \path|last_hour| & 20.63 & 0.719 & 38.61 & 0.70 \\
-3 h & nationality & \path|tim_Ni_mean15| & \path|last_hour| & 97.22 & 0.863 & 2.05 & 0.37 \\
-3 h & nationality & \path|tim_Ns_mean15| & \path|last_hour| & 7.96 & 0.818 & 6.69 & 0.23 \\
-6 h & age & \path|tim_F1_mean15| & \path|last_hour| & 4.93 & 0.715 & 7.15 & 0.43 \\
-6 h & age & \path|tim_F2_mean15| & \path|last_hour| & 15.19 & 0.791 & 4.15 & 0.38 \\
-6 h & age & \path|tim_F3_mean15| & \path|last_hour| & 16.34 & 0.810 & 3.65 & 0.38 \\
-6 h & age & \path|tim_F4_mean15| & \path|last_hour| & 21.60 & 0.801 & 3.26 & 0.37 \\
-6 h & age & \path|tim_F5_mean15| & \path|last_hour| & 26.87 & 0.857 & 3.06 & 0.39 \\
-6 h & age & \path|tim_F6_mean15| & \path|last_hour| & 26.26 & 0.744 & 1.71 & 0.40 \\
-6 h & flow & \path|ingressi_borgo| & \path|extra_trees| & 19.76 & 0.558 & 39.67 & 0.74 \\
-6 h & flow & \path|uscite_borgo| & \path|extra_trees| & 20.73 & 0.611 & 38.65 & 0.70 \\
-6 h & nationality & \path|tim_Ni_mean15| & \path|last_hour| & 95.67 & 0.871 & 2.02 & 0.37 \\
-6 h & nationality & \path|tim_Ns_mean15| & \path|last_hour| & 7.99 & 0.814 & 6.70 & 0.23 \\
-12 h & age & \path|tim_F1_mean15| & \path|last_hour| & 4.96 & 0.709 & 7.20 & 0.43 \\
-12 h & age & \path|tim_F2_mean15| & \path|last_hour| & 15.27 & 0.790 & 4.17 & 0.38 \\
-12 h & age & \path|tim_F3_mean15| & \path|last_hour| & 16.52 & 0.805 & 3.69 & 0.38 \\
-12 h & age & \path|tim_F4_mean15| & \path|last_hour| & 21.72 & 0.798 & 3.27 & 0.37 \\
-12 h & age & \path|tim_F5_mean15| & \path|last_hour| & 27.11 & 0.854 & 3.09 & 0.39 \\
-12 h & age & \path|tim_F6_mean15| & \path|last_hour| & 26.46 & 0.715 & 1.72 & 0.40 \\
-12 h & flow & \path|ingressi_borgo| & \path|last_hour| & 21.44 & 0.637 & 43.11 & 0.80 \\
-12 h & flow & \path|uscite_borgo| & \path|last_hour| & 20.75 & 0.720 & 38.75 & 0.70 \\
-12 h & nationality & \path|tim_Ni_mean15| & \path|last_hour| & 96.27 & 0.866 & 2.03 & 0.37 \\
-12 h & nationality & \path|tim_Ns_mean15| & \path|last_hour| & 7.88 & 0.815 & 6.62 & 0.22 \\
-24 h & age & \path|tim_F1_mean15| & \path|last_hour| & 5.00 & 0.702 & 7.29 & 0.45 \\
-24 h & age & \path|tim_F2_mean15| & \path|last_hour| & 15.34 & 0.789 & 4.20 & 0.39 \\
-24 h & age & \path|tim_F3_mean15| & \path|last_hour| & 16.70 & 0.805 & 3.74 & 0.39 \\
-24 h & age & \path|tim_F4_mean15| & \path|last_hour| & 22.00 & 0.790 & 3.32 & 0.39 \\
-24 h & age & \path|tim_F5_mean15| & \path|last_hour| & 27.43 & 0.848 & 3.13 & 0.41 \\
-24 h & age & \path|tim_F6_mean15| & \path|last_hour| & 26.42 & 0.726 & 1.72 & 0.41 \\
-24 h & flow & \path|ingressi_borgo| & \path|last_hour| & 21.73 & 0.635 & 43.07 & 0.83 \\
-24 h & flow & \path|uscite_borgo| & \path|last_hour| & 20.84 & 0.719 & 38.44 & 0.73 \\
-24 h & nationality & \path|tim_Ni_mean15| & \path|last_hour| & 97.32 & 0.857 & 2.05 & 0.38 \\
-24 h & nationality & \path|tim_Ns_mean15| & \path|last_hour| & 7.87 & 0.823 & 6.62 & 0.22 \\
-\end{longtable}
-}
+\end{tabular}
+\vspace{-1.1em}
+\end{table}

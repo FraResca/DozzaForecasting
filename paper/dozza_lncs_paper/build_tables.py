@@ -55,6 +55,10 @@ def latex_num(value: object, digits: int = 2) -> str:
     return f"{float(value):.{digits}f}"
 
 
+def compact_label(value: object, mapping: dict[str, str]) -> str:
+    return mapping.get(str(value), str(value).replace("_", "\\_"))
+
+
 def analysis_dir(track: str, horizon: int = PRIMARY_HORIZON) -> Path:
     return ANALYSES / f"h{horizon}h" / track
 
@@ -398,47 +402,80 @@ def build_best_model_by_target_horizon_table() -> None:
     table = table[columns].sort_values(["horizon_hours", "track", "target"]).reset_index(drop=True)
     save_csv("best_model_by_target_horizon_metrics.csv", round_numeric(table, digits=4))
 
+    track_labels = {"flow": "Flow", "nationality": "Nat.", "age": "Age"}
+    target_labels = {
+        "ingressi_borgo": "Entr.",
+        "uscite_borgo": "Exit",
+        "tim_Ni_mean15": "Ita.",
+        "tim_Ns_mean15": "For.",
+        "tim_F1_mean15": "F1",
+        "tim_F2_mean15": "F2",
+        "tim_F3_mean15": "F3",
+        "tim_F4_mean15": "F4",
+        "tim_F5_mean15": "F5",
+        "tim_F6_mean15": "F6",
+    }
+    model_labels = {
+        "dummy_median": "Med.",
+        "last_hour": "LH",
+        "rolling_mean_168h": "RM168",
+        "ridge": "Ridge",
+        "log1p_ridge": "log-Ridge",
+        "two_stage_ridge": "2S-Ridge",
+        "poisson": "Pois.",
+        "hist_gradient_boosting": "HGB",
+        "random_forest": "RF",
+        "extra_trees": "ET",
+        "xgboost": "XGB",
+        "lightgbm": "LGBM",
+    }
+
+    display_rows = []
+    for _, row in table.iterrows():
+        display_rows.append(
+            [
+                f"{int(row['horizon_hours'])}h",
+                compact_label(row["track"], track_labels),
+                compact_label(row["target"], target_labels),
+                compact_label(row["model"], model_labels),
+                latex_num(row["mae"], 2),
+                latex_num(row["r2"], 2),
+            ]
+        )
+
+    split = (len(display_rows) + 1) // 2
+    left_rows = display_rows[:split]
+    right_rows = display_rows[split:]
+    empty = ["", "", "", "", "", ""]
+
     tex_path = TABLE_DIR / "best_model_by_target_horizon_metrics.tex"
     with tex_path.open("w", encoding="utf-8") as handle:
-        handle.write("{\\scriptsize\n")
-        handle.write("\\setlength{\\tabcolsep}{3pt}\n")
-        handle.write("\\begin{longtable}{rllp{0.25\\textwidth}rrrr}\n")
+        handle.write("\\begin{table}[!t]\n")
+        handle.write("\\setlength{\\abovecaptionskip}{1pt}\n")
+        handle.write("\\setlength{\\belowcaptionskip}{2pt}\n")
         handle.write(
-            "\\caption{Lowest-MAE final-split model for each target and forecast horizon.}\\\\\n"
+            "\\caption{Lowest-MAE final-split model for each target and forecast horizon. "
+            "Abbrev.: F1--F6 age bands; LH last hour; RM168 weekly rolling mean; ET/RF/XGB/HGB/LGBM are tree and boosting models.}\n"
         )
+        handle.write("\\label{tab:all-best-models}\n")
+        handle.write("\\centering\n")
+        handle.write("\\tiny\n")
+        handle.write("\\setlength{\\tabcolsep}{1.7pt}\n")
+        handle.write("\\renewcommand{\\arraystretch}{0.72}\n")
+        handle.write("\\begin{tabular}{@{}rlllrr@{\\hspace{0.8em}}rlllrr@{}}\n")
         handle.write("\\toprule\n")
-        handle.write("H & Track & Target & Model & MAE & $R^2$ & WAPE & MASE \\\\\n")
+        handle.write(
+            "H & Track & Target & Model & MAE & $R^2$ & H & Track & Target & Model & MAE & $R^2$ \\\\\n"
+        )
         handle.write("\\midrule\n")
-        handle.write("\\endfirsthead\n")
-        handle.write("\\toprule\n")
-        handle.write("H & Track & Target & Model & MAE & $R^2$ & WAPE & MASE \\\\\n")
-        handle.write("\\midrule\n")
-        handle.write("\\endhead\n")
-        handle.write("\\midrule\n")
-        handle.write("\\multicolumn{8}{r}{Continued on next page}\\\\\n")
-        handle.write("\\endfoot\n")
+        for index in range(split):
+            left = left_rows[index]
+            right = right_rows[index] if index < len(right_rows) else empty
+            handle.write(" & ".join(left + right) + " \\\\\n")
         handle.write("\\bottomrule\n")
-        handle.write("\\endlastfoot\n")
-
-        for _, row in table.iterrows():
-            handle.write(
-                " & ".join(
-                    [
-                        f"{int(row['horizon_hours'])} h",
-                        str(row["track"]),
-                        latex_path(row["target"]),
-                        latex_path(row["model"]),
-                        latex_num(row["mae"], 2),
-                        latex_num(row["r2"], 3),
-                        latex_num(row["wape_pct"], 2),
-                        latex_num(row["mase"], 2),
-                    ]
-                )
-                + " \\\\\n"
-            )
-
-        handle.write("\\end{longtable}\n")
-        handle.write("}\n")
+        handle.write("\\end{tabular}\n")
+        handle.write("\\vspace{-1.1em}\n")
+        handle.write("\\end{table}\n")
 
 
 def build_top_k_table() -> None:
