@@ -1,4 +1,4 @@
-# RetryDozza
+# Smart City Analytics for Sustainable Tourism: an AI-Driven Framework for Flow Forecasting in a Historic Borough
 
 Reproducibility guide for the Dozza multi-source forecasting experiments.
 
